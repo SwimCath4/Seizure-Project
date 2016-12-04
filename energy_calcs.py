@@ -2,34 +2,48 @@
 	CIS 519 Project: Seizure Prediction
 	Energy Feature Calculation - 
         Energy, Nonlinear energy, Accumulated energy
-	Author: Catherine Yee
 '''
 
 import numpy as np
 
 class energy_calcs:
 
-    def __init__(self, width=100, shift=50):
+    def __init__(self):
         '''
         Constructor
         '''
-        self.width = width
-        self.shift = shift
 
-    def energy(self, X):
+    def energy(self, X, sliding_window):
     	'''
     	Returns energy feature calculation
+        Author: Catherine
     	'''
+
+        num_data_pts = int(X.shape[0]);
+        number_of_channels = int(X.shape[1]);
+        energy = np.zeros([number_of_channels, 1]); # initialize final array
+
     	return 0
 
-    def nonlinear_energy(self, X):
+    def nonlinear_energy(self, X, sliding_window):
         '''
         Returns nonlinear energy feature calculation
+        Author: Tyrell
         '''
-        return 0
+        num_data_pts = int(X.shape[0]);
+        number_of_channels = int(X.shape[1]);
+        nonlinear_energy = np.zeros([number_of_channels, 1]); # initialize final array
 
-    def accumulated_energy(self, X):
+        # Output a vector of eneries. Each value corresponds to the channel's energy
+        for channel in range (number_of_channels):
+            for i in range(1, num_data_pts - 1): # START WITH THE SECOND DATA POINT
+                nonlinear_energy[channel,0] += (X[i][channel])**2 - (X[i - 1][channel] * X[i + 1][channel]);
+
+        return nonlinear_energy
+
+    def accumulated_energy(self, X, sliding_window):
         '''
         Returns accumulated energy feature calculation
+        Author: Catherine
         '''
         return 0

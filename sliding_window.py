@@ -10,34 +10,40 @@ from itertools import islice
 class slidingWindow:
 
     def __init__(self, width=100, shift=50):
-   	    '''
+        '''
         Constructor
         '''
         self.width = width
         self.shift = shift
 
-	def window_idx(self, X):
-    	"Returns indices of a sliding window over data from the iterable"
-    	"   s -> (s0,s1,...s[width-1]), (s1,s2,...,s_width), ..."
-    	"(n/shift) x width"
+    def compute(self, X):
+    	'''
+    	Returns indices of a sliding window over data from the iterable
+    	   s -> (s0,s1,...s[width-1]), (s0+shift,s1+shift,...,s[width-1]+shift), ...
+    	'''
     	
     	n,d = X.shape
 
-    	seq = xrange(n)
-    	
-    	it = iter(seq)
-    	result = tuple(islice(it, self.width))
-    	
-    	if len(result) == self.width:
-        	yield result    
-    	for i in range(0: len(seq)/self.shift)
-    		result = result[self.shift:] + tuple(islice(iter(seq(i*self.shift:))), self.width)
-        	yield result
+    	#print "(n / self.shift - 1)*self.shift + self.width", (n / self.shift - 1)*self.shift + self.width
+        #print "n + self.shift = ", n + self.shift
 
-    def window_dat(self, X):
-    	"Returns (n/shift) x (width x d) with Xtrain data"
+        if((n / self.shift - 1)*self.shift + self.width > (n + self.shift)):
+            end = (n / self.shift - 1)*self.shift + self.width
+            #print "end = ", end
+            decr = 1
+            while end > n:
+                end = end - self.shift
+                decr = decr + 1
+            num_windows = (n / self.shift - decr)
 
-    	n,d = X.shape
+        else:
+            num_windows = (n / self.shift - 1)
 
-    	indices = self.window_idx(X)
-    	data_windows = np.zeros(len(indices), self.width, d)
+    	windows = np.zeros((num_windows, self.width))
+
+    	for i in range(0, len(windows)):
+            #print "window = ", xrange(i*self.shift, ((i*self.shift) + self.width), 1)
+            #print "len(window) = ", len(xrange(i*self.shift, ((i*self.shift) + self.width), 1))
+            windows[i,:] = xrange(i*self.shift, (i*self.shift) + self.width, 1)
+
+    	return windows.astype(int)
