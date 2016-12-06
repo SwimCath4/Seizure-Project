@@ -23,6 +23,6 @@ class curve_length:
         # Output a vector of curve lengths. Each value corresponds to the channel's CL
         for channel in range (number_of_channels):
             for i in range(1, num_data_pts): # START WITH THE SECOND DATA POINT
-            curve_length[channel,0] += abs(X[i - 1][channel] - X[i][channel]);
+                curve_length[channel,0] += abs(X[i - 1][channel] - X[i][channel]);
         
-        print curve_length;
+        return curve_length;
