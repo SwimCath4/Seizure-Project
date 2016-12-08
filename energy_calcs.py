@@ -23,7 +23,13 @@ class energy_calcs:
         number_of_channels = int(X.shape[1]);
         energy = np.zeros([1, number_of_channels]); # initialize final array
 
-    	return 0
+        # Output a vector of eneries. Each value corresponds to the channel's energy
+        for channel in range (number_of_channels):
+            for i in range(1, num_data_pts - 1): # START WITH THE SECOND DATA POINT
+                energy[0, channel] += (X[i][channel])**2;
+            energy[0, channel] = (energy[0, channel]) / num_data_pts;
+
+        return energy
 
     def nonlinear_energy(self, X, sliding_window):
         '''
@@ -46,4 +52,13 @@ class energy_calcs:
         Returns accumulated energy feature calculation
         Author: Catherine
         '''
-        return 0
+        num_data_pts = int(X.shape[0]);
+        number_of_channels = int(X.shape[1]);
+        accumulated_energy = np.zeros([1, number_of_channels]); # initialize final array
+
+        # Output a vector of eneries. Each value corresponds to the channel's energy
+        for channel in range (number_of_channels):
+            for i in range(1, num_data_pts - 1): # START WITH THE SECOND DATA POINT
+                accumulated_energy[0, channel] += (X[i][channel])**2;
+
+        return accumulated_energy
