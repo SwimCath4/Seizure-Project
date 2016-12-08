@@ -60,5 +60,6 @@ class energy_calcs:
         for channel in range (number_of_channels):
             for i in range(1, num_data_pts - 1): # START WITH THE SECOND DATA POINT
                 accumulated_energy[0, channel] += (X[i][channel])**2;
+                #I still need to finish coding this computation
 
         return accumulated_energy
