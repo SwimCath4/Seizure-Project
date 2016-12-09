@@ -32,6 +32,7 @@ def spectral_entropy(X):
     # 3. Compute entropies. Each value corresponds to the channel's entropy
     for channel in range (0, number_of_channels):
         for i in range(1, num_data_pts): # START WITH THE SECOND DATA POINT
-            spectral_entropy[0,channel] += - PDF[i][channel] * math.log(PDF[i][channel], 2);
+            if PDF[i][channel] != 0:
+                spectral_entropy[0,channel] += - PDF[i][channel] * math.log(PDF[i][channel], 2);
     
-    return spectral_entropy;
+    return spectral_entropy / num_data_pts;

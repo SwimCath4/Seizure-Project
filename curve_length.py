@@ -40,6 +40,6 @@ def curve_length(X):
         for i in range(1, num_data_pts): # START WITH THE SECOND DATA POINT
             curve_length[0, channel] += abs(X[i - 1][channel] - X[i][channel]);
     
-    return curve_length;
+    return curve_length / num_data_pts;
                 
         
