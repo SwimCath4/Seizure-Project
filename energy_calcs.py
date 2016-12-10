@@ -9,7 +9,7 @@ import numpy as np
 def energy(X):
     '''
     Returns energy feature calculation
-    Author: Catherine
+    Author: Catherine Yee
     '''
     
     #num_data_pts = int(X.shape[0]);
@@ -29,7 +29,7 @@ def energy(X):
 def nonlinear_energy(X):
     '''
     Returns nonlinear energy feature calculation
-    Author: Tyrell
+    Author: Tyrell McCurbin
     '''
     
     num_data_pts = int(X.shape[0]);
@@ -42,7 +42,7 @@ def nonlinear_energy(X):
 def accumulated_energy(X):
     '''
     Returns accumulated energy feature calculation
-    Author: Catherine
+    Author: Catherine Yee
     '''
 
     ## Define width and shift values for accumulated energy calculation ##    
