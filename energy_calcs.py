@@ -24,7 +24,7 @@ def energy(X):
     
     #return energy
 
-    return np.mean(X**2, axis = 0).reshape(1,16);
+    return np.mean(np.power(X, 2), axis = 0).reshape(1,16);
 
 def nonlinear_energy(X):
     '''
@@ -45,13 +45,36 @@ def accumulated_energy(X):
     Author: Catherine
     '''
     
-    num_data_pts = int(X.shape[0]);
-    number_of_channels = int(X.shape[1]);
-    accumulated_energy = np.zeros([1, number_of_channels]); # initialize final array
-    
-    # Output a vector of eneries. Each value corresponds to the channel's energy
-    for channel in range (number_of_channels):
-        for i in range(1, num_data_pts - 1): # START WITH THE SECOND DATA POINT
-            accumulated_energy[0, channel] += (X[i][channel])**2;
-    
-    return accumulated_energy
+    width = 10
+    shift = 5
+
+    E_k = np.zeros([1,16])
+    E_k = np.divide(energy(X[0:width]), width)
+    acc_energy = E_k
+    num_data_pts = len(X)
+
+    #print "acc_energy = ", acc_energy
+    #print "acc_energy[0] = ", acc_energy[0]
+
+    # Calculate m
+    if((num_data_pts / shift - 1)*shift + width > (num_data_pts + shift)):
+            end = (num_data_pts / shift - 1)*shift + width
+            #print "end = ", end
+            decr = 1
+            while end > num_data_pts:
+                end = end - shift
+                decr = decr + 1
+            m = (num_data_pts / shift - decr)
+
+    else:
+        m = (num_data_pts / shift - 1)
+
+    # Output a vector of accumulated eneries. Each value corresponds to the channel's energy
+    #START WITH THE SECOND DATA POINT
+    for i in range(1, m):
+        #print "X[i*shift : i*shift + width] = ", X[i*shift : i*shift + width]
+        #print "energy(X[i*shift : i*shift + width]) = ", energy(X[i*shift : i*shift + width])
+        #print "[[np.divide(energy(X[i*shift : i*shift + width]), width)] = ", [np.divide(energy(X[i*shift : i*shift + width]), width)]
+        acc_energy = np.add([np.divide(energy(X[i*shift : i*shift + width]), width)], [acc_energy])
+
+    return acc_energy.reshape(1,16)
