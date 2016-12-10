@@ -33,10 +33,10 @@ def nonlinear_energy(X):
     '''
     
     num_data_pts = int(X.shape[0]);
-    X1 = X[1:-1,:]**2;
+    X1 = np.power(X[1:-1,:], 2);
     X2 = X[0:-2,:];
     X3 = X[2:,:];
-    
+
     return np.sum(X1 - np.multiply(X2, X3), axis=0) / float(num_data_pts - 2);
 
 def accumulated_energy(X):
