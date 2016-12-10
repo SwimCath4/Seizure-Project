@@ -44,33 +44,31 @@ def accumulated_energy(X):
     Returns accumulated energy feature calculation
     Author: Catherine
     '''
-    
+
+    ## Define width and shift values for accumulated energy calculation ##    
     width = 10
     shift = 5
 
+    ## Compute first energy calculation ##
     E_k = np.zeros([1,16])
     E_k = np.divide(energy(X[0:width]), width)
     acc_energy = E_k
     num_data_pts = len(X)
 
-    #print "acc_energy = ", acc_energy
-    #print "acc_energy[0] = ", acc_energy[0]
-
-    # Calculate m
+    ## Calculate m - number of times to update accumulated energy ##
+    
+    # Handle case in which number of instances is not divisible by 5
     if((num_data_pts / shift - 1)*shift + width > (num_data_pts + shift)):
             end = (num_data_pts / shift - 1)*shift + width
-            #print "end = ", end
             decr = 1
             while end > num_data_pts:
                 end = end - shift
                 decr = decr + 1
             m = (num_data_pts / shift - decr)
-
     else:
         m = (num_data_pts / shift - 1)
 
-    # Output a vector of accumulated eneries. Each value corresponds to the channel's energy
-    #START WITH THE SECOND DATA POINT
+    ## Output a vector of accumulated eneries. Each value corresponds to the channel's energy ##
     for i in range(1, m):
         #print "X[i*shift : i*shift + width] = ", X[i*shift : i*shift + width]
         #print "energy(X[i*shift : i*shift + width]) = ", energy(X[i*shift : i*shift + width])
