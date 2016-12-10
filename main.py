@@ -39,30 +39,22 @@ i = 0;
 for filename in os.listdir('../Data/'):
     # Extract the data from the file    
     data = np.loadtxt(directory + filename, delimiter= ',');
-    # Calculate the features for the file 
-    print 'SIXTH POWER';    
+    # Calculate the features for the file     
     sp = sixth_power(data)[0];
-    print sp
-    print 'CURVE LENGTH';
     cl = curve_length(data)[0];
-    print cl
-    #print 'SPECTRAL ENTROPY';
-    #se = spectral_entropy(data)[0];
-    #print se;
-    print 'ENERGY: '
+    se = spectral_entropy(data);
     e = energy(data)[0];
-    print e;
-    print 'NONLINEAR ENERGY'
     ne = nonlinear_energy(data);
-    print ne
-    print 'ACCUMULATED ENERGY'
     ae = accumulated_energy(data);
-    print ae
-    print 'LABEL'
+    print ('sp ', sp.shape)
+    print ('cl ', cl.shape)
+    print ('se ', se.shape)
+    print ('e ', e.shape)
+    print ('ne ', ne.shape)
+    print ('ae ', ae.shape)
     label = np.array([int(filename[-5])]); # Extract label from file name
-    print label  
     # Concatenate features into row vector
-    instance = np.concatenate((sp, cl, se, e, ne, label));
+    instance = np.concatenate((sp, cl, se, e, ne, ae, label));
     X[i,:] = instance;
     i += 1;
 print 'X'    
