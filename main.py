@@ -12,7 +12,7 @@ import numpy as np
 from sixth_power import sixth_power
 from curve_length import curve_length
 from spectral_entropy import spectral_entropy
-from energy_calcs import energy, nonlinear_energy
+from energy_calcs import energy, nonlinear_energy, accumulated_energy
 
 
 X_test_1 = np.loadtxt('1_1_0_small.dat', delimiter= ',');
@@ -46,15 +46,18 @@ for filename in os.listdir('../Data/'):
     print 'CURVE LENGTH';
     cl = curve_length(data)[0];
     print cl
-    print 'SPECTRAL ENTROPY';
-    se = spectral_entropy(data)[0];
-    print se;
+    #print 'SPECTRAL ENTROPY';
+    #se = spectral_entropy(data)[0];
+    #print se;
     print 'ENERGY: '
     e = energy(data)[0];
     print e;
     print 'NONLINEAR ENERGY'
-    ne = nonlinear_energy(data)[0];
+    ne = nonlinear_energy(data);
     print ne
+    print 'ACCUMULATED ENERGY'
+    ae = accumulated_energy(data);
+    print ae
     print 'LABEL'
     label = np.array([int(filename[-5])]); # Extract label from file name
     print label  

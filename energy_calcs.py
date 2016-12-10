@@ -50,7 +50,7 @@ def accumulated_energy(X):
     shift = 5
 
     ## Compute first energy calculation ##
-    E_k = np.zeros([1,16])
+    #E_k = np.zeros([1,16])
     E_k = np.divide(energy(X[0:width]), width)
     acc_energy = E_k
     num_data_pts = len(X)
@@ -73,6 +73,6 @@ def accumulated_energy(X):
         #print "X[i*shift : i*shift + width] = ", X[i*shift : i*shift + width]
         #print "energy(X[i*shift : i*shift + width]) = ", energy(X[i*shift : i*shift + width])
         #print "[[np.divide(energy(X[i*shift : i*shift + width]), width)] = ", [np.divide(energy(X[i*shift : i*shift + width]), width)]
-        acc_energy = np.add([np.divide(energy(X[i*shift : i*shift + width]), width)], [acc_energy])
+        acc_energy = (np.add([np.divide(energy(X[i*shift : i*shift + width]), width)], [acc_energy])).reshape(1,16);
 
-    return acc_energy.reshape(1,16)
+    return acc_energy
