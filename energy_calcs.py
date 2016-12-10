@@ -75,4 +75,4 @@ def accumulated_energy(X):
         #print "[[np.divide(energy(X[i*shift : i*shift + width]), width)] = ", [np.divide(energy(X[i*shift : i*shift + width]), width)]
         acc_energy = (np.add([np.divide(energy(X[i*shift : i*shift + width]), width)], [acc_energy])).reshape(1,16);
 
-    return acc_energy
+    return np.divide(acc_energy, m)
