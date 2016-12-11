@@ -9,7 +9,7 @@
 '''
 
 import numpy as np
-from knn import compute_centroid
+from knn import compute_centroid, predict
 
 # import Xtrain and Xtest data #
 
@@ -17,21 +17,21 @@ filePath = "X_train.dat"
 file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
 
-Xtrain = allData
+Xtrain = allData[0:int(len(allData)/2),:]
 
-filePath = "X_test.dat"
-file = open(filePath,'r')
-allData = np.loadtxt(file, delimiter=',')
+#filePath = "X_test.dat"
+#file = open(filePath,'r')
+#allData = np.loadtxt(file, delimiter=',')
 
-Xtest = allData
+#Xtest = allData
 
+Xtest = allData[int(len(allData)/2) + 1 :, :]
 n_train, d = Xtrain.shape
 n_test = Xtest.shape[0]
-print "n_test = ", n_test
 
-centroid_0 = np.zeros((1,96))
-centroid_1 = np.zeros((1,96))
-
+centroid_0 = np.zeros((1,n_train-1))
+centroid_1 = np.zeros((1,n_train-1))
+predicted_labels = np.zeros(n_test)
 
 # booleans for determining whether first centroid has been initialized #
 centroid_0_init = 0
@@ -44,6 +44,7 @@ for i in range(0, n_train):
         if(centroid_0_init == 0):
             centroid_0 = Xtrain[i,:-1]
             centroid_0_init = 1
+            #print "centroid_0 first = ", centroid_0
         else:
             centroid_0 = compute_centroid(centroid_0, Xtrain[i,:-1])
 
@@ -51,10 +52,15 @@ for i in range(0, n_train):
         if(centroid_1_init == 0):
             centroid_1 = Xtrain[i,:-1]
             centroid_1_init = 1
+            #print "centroid_1 first = ", centroid_1
         else:
             centroid_1 = compute_centroid(centroid_1, Xtrain[i,:-1])
 
-print "centroid_0 = ", centroid_0
-print "centroid_1 = ", centroid_1
+#print "centroid_0 = ", centroid_0
+#print "centroid_1 = ", centroid_1
 
 ## Predict testing data ##
+for i in range(0, n_test):
+    predicted_labels[i] = predict(centroid_0, centroid_1, Xtest[i,:-1])
+
+print "predicted_labels = ", predicted_labels
