@@ -25,7 +25,7 @@ X_test_2 = np.array([[1,1,1,1],[2,2,2,2],[3,3,3,3],[4,4,4,4],[5,5,5,5]]);
 # Count the number of files in the directory
 directory = '../Data/';
 num_channels = 16;
-num_features = 5;
+num_features = 6;
 num_files = len([f for f in os.listdir(directory)
                 if os.path.isfile(os.path.join(directory, f))])
 X = np.zeros([num_files, num_features * num_channels + 1]); # ADD A COL FOR LABEL
@@ -37,6 +37,7 @@ X = np.zeros([num_files, num_features * num_channels + 1]); # ADD A COL FOR LABE
 #===============================================
 i = 0;
 for filename in os.listdir('../Data/'):
+    print (i)
     # Extract the data from the file    
     data = np.loadtxt(directory + filename, delimiter= ',');
     # Calculate the features for the file     
@@ -45,20 +46,13 @@ for filename in os.listdir('../Data/'):
     se = spectral_entropy(data);
     e = energy(data)[0];
     ne = nonlinear_energy(data);
-    ae = accumulated_energy(data);
-    print ('sp ', sp.shape)
-    print ('cl ', cl.shape)
-    print ('se ', se.shape)
-    print ('e ', e.shape)
-    print ('ne ', ne.shape)
-    print ('ae ', ae.shape)
+    ae = accumulated_energy(data)[0,:];
     label = np.array([int(filename[-5])]); # Extract label from file name
     # Concatenate features into row vector
     instance = np.concatenate((sp, cl, se, e, ne, ae, label));
     X[i,:] = instance;
-    i += 1;
-print 'X'    
-print X
+    i += 1;   
+np.savetxt('training_data.dat', X, delimiter=',');
 
 
     
