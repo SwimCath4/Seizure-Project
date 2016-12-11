@@ -2,7 +2,7 @@
 '''
 	CIS 519 Project: Seizure Prediction
 	Main Function For Seizure Data Analysis
-	Authors:   Tyrell McCurbin
+	Authors:     Tyrell McCurbin
                  Catherine Yee
                  Elaida Dimwamwa
                  Zheng Tian
@@ -10,6 +10,7 @@
 
 import numpy as np
 from knn import compute_centroid, predict
+from normalize import norm
 
 # import Xtrain and Xtest data #
 
@@ -18,6 +19,11 @@ file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
 
 Xtrain = allData[0:int(len(allData)/2),:]
+print "Xtrain.shape = ", Xtrain.shape
+print "Xtrain = ", Xtrain
+Xtrain[:,0:-1] = norm(Xtrain[:,0:-1])
+print "norm(Xtrain).shape = ", Xtrain.shape
+print "Xtrain = ", Xtrain
 
 #filePath = "X_test.dat"
 #file = open(filePath,'r')
@@ -26,6 +32,10 @@ Xtrain = allData[0:int(len(allData)/2),:]
 #Xtest = allData
 
 Xtest = allData[int(len(allData)/2) + 1 :, :]
+print "Xtest.shape = ", Xtest.shape
+Xtest[:,0:-1] = norm(Xtest[:,0:-1])
+print "norm(Xtest).shape = ", Xtest.shape
+
 n_train, d = Xtrain.shape
 n_test = Xtest.shape[0]
 
