@@ -79,7 +79,7 @@ with PdfPages('graphTextClassifierROC.pdf') as pdf:
     fig1 = plt.figure()
     lw = 2
 
-    plt.plot(fpr_knn, tpr_knn, lw=lw, label='KNN ROC Curve (area = %0.2f)' % roc_auc_knn)
+    plt.plot(fpr_knn, tpr_knn, lw=lw, label='KNN ROC Curve without Dimensionality Reduction (area = %0.2f)' % roc_auc_knn)
     plt.plot(fpr_knn_pca, tpr_knn_pca, lw=lw, label='PCA and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_pca)
     plt.plot(fpr_knn_kpca, tpr_knn_kpca, lw=lw, label='KPCA and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_kpca)
     plt.plot(fpr_knn_lle, tpr_knn_lle, lw=lw, label='LLE and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_lle)
@@ -91,7 +91,7 @@ with PdfPages('graphTextClassifierROC.pdf') as pdf:
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('Dimensionality Reduction ROC curves')
+    plt.title('ROC curves')
     plt.legend(loc="lower right")
     #plt.show()
     pdf.savefig(fig1)
