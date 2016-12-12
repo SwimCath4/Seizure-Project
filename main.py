@@ -88,25 +88,117 @@ fpr_knn = dict()
 tpr_knn = dict()
 roc_auc_knn = dict()
 fpr_knn, tpr_knn, _ = roc_curve(ytest, predicted_labels)
-# print "fpr_knn = ", fpr_knn
-# print "tpr_knn = ", tpr_knn
+print "fpr_knn = ", fpr_knn
+print "tpr_knn = ", tpr_knn
 roc_auc_knn = auc(fpr_knn, tpr_knn)
+
+# knn with pca
+dim_red_method = dim_red.componentsPca(n_components)
+reducedXTrain = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+reducedXTest = dim_red_method.transform(Xtest[:,0:-1])
+n_train, d = reducedXTrain.shape
+n_test = Xtest.shape[0]
+knn = KNeighborsClassifier(p=2)
+knn.fit(reducedXTrain, ytrain)
+predicted_labels = knn.predict(reducedXTest)
+print "precision = "
+pprint(metrics.precision_score(ytest, predicted_labels))
+print "recall = "
+pprint(metrics.recall_score(ytest, predicted_labels))
+print "accuracy = "
+pprint(metrics.accuracy_score(ytest, predicted_labels))
+fpr_knn_pca = dict()
+tpr_knn_pca = dict()
+roc_auc_knn_pca = dict()
+fpr_knn_pca, tpr_knn_pca, _ = roc_curve(ytest, predicted_labels)
+print "fpr_knn_pca = ", fpr_knn_pca
+print "tpr_knn_pca = ", tpr_knn_pca
+roc_auc_knn_pca = auc(fpr_knn_pca, tpr_knn_pca)
+
+# knn with kpca
+dim_red_method = dim_red.kpca(n_components)
+reducedXTrain = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+reducedXTest = dim_red_method.transform(Xtest[:,0:-1])
+n_train, d = reducedXTrain.shape
+n_test = Xtest.shape[0]
+knn = KNeighborsClassifier(p=2)
+knn.fit(reducedXTrain, ytrain)
+predicted_labels = knn.predict(reducedXTest)
+print "precision = "
+pprint(metrics.precision_score(ytest, predicted_labels))
+print "recall = "
+pprint(metrics.recall_score(ytest, predicted_labels))
+print "accuracy = "
+pprint(metrics.accuracy_score(ytest, predicted_labels))
+fpr_knn_kpca = dict()
+tpr_knn_kpca = dict()
+roc_auc_knn_kpca = dict()
+fpr_knn_kpca, tpr_knn_kpca, _ = roc_curve(ytest, predicted_labels)
+print "fpr_knn_kpca = ", fpr_knn_kpca
+print "tpr_knn_kpca = ", tpr_knn_kpca
+roc_auc_knn_kpca = auc(fpr_knn_kpca, tpr_knn_kpca)
+
+# knn with lle
+dim_red_method = dim_red.lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1)
+reducedXTrain = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+reducedXTest = dim_red_method.transform(Xtest[:,0:-1])
+n_train, d = reducedXTrain.shape
+n_test = Xtest.shape[0]
+knn = KNeighborsClassifier(p=2)
+knn.fit(reducedXTrain, ytrain)
+predicted_labels = knn.predict(reducedXTest)
+print "precision = "
+pprint(metrics.precision_score(ytest, predicted_labels))
+print "recall = "
+pprint(metrics.recall_score(ytest, predicted_labels))
+print "accuracy = "
+pprint(metrics.accuracy_score(ytest, predicted_labels))
+fpr_knn_lle = dict()
+tpr_knn_lle = dict()
+roc_auc_knn_lle = dict()
+fpr_knn_lle, tpr_knn_lle, _ = roc_curve(ytest, predicted_labels)
+print "fpr_knn_lle = ", fpr_knn_lle
+print "tpr_knn_lle = ", tpr_knn_lle
+roc_auc_knn_lle = auc(fpr_knn_lle, tpr_knn_lle)
+
+# knn with hlle
+dim_red_method = dim_red.lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1, hessian=True)
+reducedXTrain = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+reducedXTest = dim_red_method.transform(Xtest[:,0:-1])
+n_train, d = reducedXTrain.shape
+n_test = Xtest.shape[0]
+knn = KNeighborsClassifier(p=2)
+knn.fit(reducedXTrain, ytrain)
+predicted_labels = knn.predict(reducedXTest)
+print "precision = "
+pprint(metrics.precision_score(ytest, predicted_labels))
+print "recall = "
+pprint(metrics.recall_score(ytest, predicted_labels))
+print "accuracy = "
+pprint(metrics.accuracy_score(ytest, predicted_labels))
+fpr_knn_hlle = dict()
+tpr_knn_hlle = dict()
+roc_auc_knn_hlle = dict()
+fpr_knn_hlle, tpr_knn_hlle, _ = roc_curve(ytest, predicted_labels)
+print "fpr_knn_hlle = ", fpr_knn_hlle
+print "tpr_knn_hlle = ", tpr_knn_hlle
+roc_auc_knn_hlle = auc(fpr_knn_hlle, tpr_knn_hlle)
 
 # Compute micro-average ROC curve and ROC area
 #fpr_knn["micro"], tpr_knn["micro"], _ = roc_curve(ytest.ravel(), predicted_labels.ravel())
 #roc_auc_knn["micro"] = auc(fpr_knn["micro"], tpr_knn["micro"])
 
 # Save plot to pdf
-with PdfPages('ROC.pdf') as pdf:
+with PdfPages('ROC_nocrossval.pdf') as pdf:
     #pp = PdfPages("graphTextClassifierROC.pdf")
     fig1 = plt.figure()
     lw = 2
 
     plt.plot(fpr_knn, tpr_knn, lw=lw, label='KNN ROC Curve without Dimensionality Reduction (area = %0.2f)' % roc_auc_knn)
-    #plt.plot(fpr_knn_pca, tpr_knn_pca, lw=lw, label='PCA and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_pca)
-    #plt.plot(fpr_knn_kpca, tpr_knn_kpca, lw=lw, label='KPCA and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_kpca)
-    #plt.plot(fpr_knn_lle, tpr_knn_lle, lw=lw, label='LLE and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_lle)
-    #plt.plot(fpr_knn_hlle, tpr_knn_hlle, lw=lw, label='Hessian LLE and KNN ROC Curve (area = %0.2f)' % roc_auc_knn_hlle)
+    plt.plot(fpr_knn_pca, tpr_knn_pca, lw=lw, label='KNN with PCA ROC Curve (area = %0.2f)' % roc_auc_knn_pca)
+    plt.plot(fpr_knn_kpca, tpr_knn_kpca, lw=lw, label='KNN with RBF Kernel PCA ROC Curve (area = %0.2f)' % roc_auc_knn_kpca)
+    plt.plot(fpr_knn_lle, tpr_knn_lle, lw=lw, label='KNN with LLE ROC Curve (area = %0.2f)' % roc_auc_knn_lle)
+    plt.plot(fpr_knn_hlle, tpr_knn_hlle, lw=lw, label='KNN with Hessian LLE ROC Curve (area = %0.2f)' % roc_auc_knn_hlle)
 
 
     plt.plot([0,1], [0,1], lw=lw, linestyle='--')
@@ -116,7 +208,7 @@ with PdfPages('ROC.pdf') as pdf:
     plt.ylabel('True Positive Rate')
     plt.title('ROC curves')
     plt.legend(loc="lower right")
-    #plt.show()
+    plt.show()
     pdf.savefig(fig1)
     #plt.savefig(pp, format='pdf')
     plt.close()
