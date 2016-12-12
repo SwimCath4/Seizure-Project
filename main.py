@@ -33,8 +33,8 @@ ytrain = allData[0:int(len(allData)/2), -1]
 
 # n_components for dimensionality reduction, chosen from graph_pca_info plots
 n_components = 20
-# n_neighbors for knn; default value is 5
-n_neighbors = 5
+# n_neighbors for knn; sklearn's default value is 5
+knn_neighbors = 5
 
 # dimensionality reduction; change the method for whichever method you choose
 
@@ -57,7 +57,7 @@ reducedXTest = Xtest
 n_train, d = reducedXTrain.shape
 n_test = Xtest.shape[0]
 
-knn = KNeighborsClassifier(p=2)
+knn = KNeighborsClassifier(n_neighbors=knn_neighbors, p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
 # print "predicted_labels = ", predicted_labels
@@ -72,18 +72,24 @@ pprint(metrics.accuracy_score(ytest, predicted_labels))
 # plot_pca_info(Xtrain[:,0:-1], n_components)
 
 
-# k-fold cross validation
-k = 10
-#scores = cross_val_score(knn, reducedXTrain, cv=k)
-#print "scores: ", scores
+# k-fold cross validation over the entire dataset
+k_folds = 10
+# data should be shuffled
+dataCopy = allData
+np.random.shuffle(dataCopy)
+
+X = dataCopy[:, 0:-1]
+y = dataCopy[:, -1]
+scores = cross_val_score(knn, X, y=y, cv=k_folds)
+print "scores: ", scores
 
 # Compute the ROC curves and ROC areas
 fpr_knn = dict()
 tpr_knn = dict()
 roc_auc_knn = dict()
 fpr_knn, tpr_knn, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn = ", fpr_knn
-print "tpr_knn = ", tpr_knn
+# print "fpr_knn = ", fpr_knn
+# print "tpr_knn = ", tpr_knn
 roc_auc_knn = auc(fpr_knn, tpr_knn)
 
 # Compute micro-average ROC curve and ROC area

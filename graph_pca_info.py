@@ -29,7 +29,6 @@ def plot_pca_info(data, n_components):
 	# plot explained variance as a f'n of number of primary components
 	for i in range(n_components):
 		princ_c = i + 1
-		# change this to try diff things
 		pca = PCA(n_components=princ_c)
 
 		start_times[i] = time.clock() # time.clock measures cpu time on unix
@@ -43,13 +42,11 @@ def plot_pca_info(data, n_components):
 
 	plt.subplot(1, 2, 2, aspect='equal')
 	plt.title("CPU time for PCA given desired principal components")
-	# list comprehension is cool, just wanted to say
+	# list comprehension is cool, I wanted to try it
 	plt.plot([(x + 1) for x in range(n_components)], np.multiply([end_times[y] - start_times[y] for y in range(n_components)], 1000))
 	plt.xlabel("Principal components")
 	plt.ylabel("CPU time (milliseconds)")
 
-	# TODO: maybe plot primary components as a f'n of desired explained variance?
-	# would that be redundant since i plot them the other way around above?
 	plt.tight_layout()
 	plt.show()
 
