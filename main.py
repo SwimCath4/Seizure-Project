@@ -120,3 +120,8 @@ with PdfPages('ROC.pdf') as pdf:
     pdf.savefig(fig1)
     #plt.savefig(pp, format='pdf')
     plt.close()
+
+# change kpca kernel type
+# play with kernel parameters of the kpca kernel
+# change number of neighbors for LLE
+# change number of neighbors for knn
