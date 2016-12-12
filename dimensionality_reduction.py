@@ -38,6 +38,7 @@ def main(argv):
 	if argv[2]:
 		graph_pca_info.plot_info(data, n_components)
 
+	pca_model = pca.componentsPca(n_components)
 	return pca_model
 
 if __name__ == "__main__":

@@ -10,7 +10,8 @@
 
 import numpy as np
 from knn import compute_centroid, predict
-import dimensionality_reduction
+import dim_red
+import lle
 from normalize import norm, standardize
 
 # import Xtrain and Xtest data #
@@ -20,8 +21,9 @@ file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
 Xtrain = allData[0:int(len(allData)/2),:]
 Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
-# dimensionality reduction
-Xtrain = dimensionality_reduction.main([Xtrain, 9, True])
+# dimensionality reduction; change the method for whichever method
+dim_red_method = dim_red.componentsPca(9)
+Xtrain[:,0:-1] = dim_red_method.fit_transform(Xtrain[:,0:-1], Xtrain[:,-1])
 
 filePath = "X_test.dat"
 file = open(filePath,'r')

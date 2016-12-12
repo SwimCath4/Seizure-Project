@@ -6,6 +6,7 @@
 
 import numpy as np
 from sklearn.decomposition import PCA, KernelPCA
+from sklearn.manifold import LocallyLinearEmbedding
 
 '''
 	componentsPca takes a positive integer
@@ -32,3 +33,10 @@ def kpca(numComponents, coef0=1):
 	# let gamma be the default value
 	return KernelPCA(n_components=numComponents, kernel='rbf', coef0=coef0)
 		
+
+def lle(numComponents, hessian=false):
+	# if there's time we can try changing n_neighbors
+	if hessian:
+		return LocallyLinearEmbedding(n_components=numComponents, method='hessian')
+	else:
+		return LocallyLinearEmbedding(n_components=numComponents)
