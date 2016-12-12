@@ -10,27 +10,25 @@
 
 import numpy as np
 from knn import compute_centroid, predict
-from normalize import norm
+import dimensionality_reduction
+from normalize import norm, standardize
 
 # import Xtrain and Xtest data #
 
 filePath = "X_train.dat"
 file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
-
 Xtrain = allData[0:int(len(allData)/2),:]
+Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
+# dimensionality reduction
+Xtrain = dimensionality_reduction.main([Xtrain, 9, True])
 
-#Xtrain[:,0:-1] = norm(Xtrain[:,0:-1])
-
-#filePath = "X_test.dat"
-#file = open(filePath,'r')
-#allData = np.loadtxt(file, delimiter=',')
-
-#Xtest = allData
-
+filePath = "X_test.dat"
+file = open(filePath,'r')
+allData = np.loadtxt(file, delimiter=',')
 Xtest = allData[int(len(allData)/2) + 1 :, :]
+# Xtest[:,0:-1] = norm(Xtest[:,0:-1])
 
-#Xtest[:,0:-1] = norm(Xtest[:,0:-1])
 
 n_train, d = Xtrain.shape
 n_test = Xtest.shape[0]
