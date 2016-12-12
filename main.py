@@ -9,7 +9,6 @@
 '''
 
 import numpy as np
-# from knn import compute_centroid, predict
 import dim_red
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
@@ -213,7 +212,8 @@ with PdfPages('ROC_nocrossval.pdf') as pdf:
     #plt.savefig(pp, format='pdf')
     plt.close()
 
+# Things we can try to do to get better results/plots:
 # change kpca kernel type
-# play with kernel parameters of the kpca kernel
+# change kernel parameters of the kpca kernel
 # change number of neighbors for LLE
 # change number of neighbors for knn
