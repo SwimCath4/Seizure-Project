@@ -7,7 +7,7 @@ shift = 5;
 %% Compute first energy calculation %%
 
 E_k = Energy(X(1:width,:)) ./ width;
-acc_energy = E_k;
+acc_energy = E_k
 num_data_pts = length(X);
 
 %% Calculate m - number of times to update accumulated energy %%
@@ -17,7 +17,8 @@ m = floor((num_data_pts-(width) + (shift))/(shift));
 
 %% Output a vector of accumulated eneries. Each value corresponds to the channel's energy %%
 
-for i=2:m
-    acc_energy = acc_energy + (Energy(X(i*shift:i*shift + width)) ./ width);
+for i=2:m-1
+    acc_energy = acc_energy + (Energy(X(i*shift:(i*shift + width),:)) ./ width);
+end
 
-acc_energy = acc_energy / m;
+acc_energy = acc_energy ./ m;
