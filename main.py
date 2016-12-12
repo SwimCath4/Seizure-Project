@@ -16,22 +16,21 @@ from normalize import norm, standardize
 
 # import Xtrain and Xtest data #
 
-filePath = "X_train.dat"
+filePath = "X.dat"
 file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
 Xtrain = allData[0:int(len(allData)/2),:]
 Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
+ytrain = allData[0:int(len(allData)/2),-1]
+
 # dimensionality reduction; change the method for whichever method
 dim_red_method = dim_red.componentsPca(9)
-Xtrain[:,0:-1] = dim_red_method.fit_transform(Xtrain[:,0:-1], Xtrain[:,-1])
+Xtrain[:,0:-1] = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
 
-# filePath = "X_test.dat"
-# file = open(filePath,'r')
-# allData = np.loadtxt(file, delimiter=',')
 Xtest = allData[int(len(allData)/2) + 1:, :]
 Xtest[:,0:-1] = standardize(Xtest[:,0:-1])
 Xtest[:,0:-1] = dim_red_method.transform(Xtest[:,0:-1])
-
+ytest = allData[int(len(allData)/2) + 1:, -1]
 
 n_train, d = Xtrain.shape
 n_test = Xtest.shape[0]
@@ -47,7 +46,7 @@ centroid_1_init = 0
 ## Compute centroids for training data ##
 
 for i in range(0, n_train):
-    if(Xtrain[i,d-1] == 0.0):
+    if(ytrain[i] == 0.0):
         if(centroid_0_init == 0):
             centroid_0 = Xtrain[i,:-1]
             centroid_0_init = 1
@@ -55,7 +54,7 @@ for i in range(0, n_train):
         else:
             centroid_0 = compute_centroid(centroid_0, Xtrain[i,:-1])
 
-    elif(Xtrain[i,d-1] == 1.0):
+    elif(ytrain[i] == 1.0):
         if(centroid_1_init == 0):
             centroid_1 = Xtrain[i,:-1]
             centroid_1_init = 1
