@@ -11,6 +11,7 @@
 import numpy as np
 from knn import compute_centroid, predict
 import dim_red
+from graph_pca_info import plot_pca_info
 from normalize import norm, standardize
 from sklearn import metrics
 from pprint import pprint
@@ -24,8 +25,10 @@ Xtrain = allData[0:int(len(allData)/2),:]
 Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
 ytrain = allData[0:int(len(allData)/2),-1]
 
+n_components = 20
+
 # dimensionality reduction; change the method for whichever method
-dim_red_method = dim_red.lle(9)
+dim_red_method = dim_red.lle(n_components)
 dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
 
 Xtest = allData[int(len(allData)/2) + 1:, :]
@@ -78,3 +81,5 @@ print "LLE & KNN precision = "
 pprint(metrics.precision_score(ytest, predicted_labels))
 print "LLE & KNN recall = "
 pprint(metrics.recall_score(ytest, predicted_labels))
+
+plot_pca_info(Xtrain[:,0:-1], n_components)

@@ -19,7 +19,7 @@ from sklearn.decomposition import PCA, KernelPCA
 	plots explained variance as a f'n of number of primary components
 	plots time taken to fit the model as a f'n of number of primary components
 '''
-def plot_info(data, n_components):
+def plot_pca_info(data, n_components):
 	print "data: ", data
 	plt.figure(figsize=(16, 8))
 	plt.subplot(1, 2, 1, aspect='equal')
@@ -33,7 +33,7 @@ def plot_info(data, n_components):
 		pca = PCA(n_components=princ_c)
 
 		start_times[i] = time.clock() # time.clock measures cpu time on unix
-		pca.fit(data)
+		pca.fit_transform(data)
 		end_times[i] = time.clock()
 		
 		print "princip. comp.s, explained var.: ", princ_c, sum(pca.explained_variance_ratio_)
@@ -71,7 +71,7 @@ def main(argv):
 	file = open(filePath,'r')
 	data = np.loadtxt(file, delimiter=',')
 	n_components = int(argv[1])
-	plot_info(data, n_components)
+	plot_pca_info(data, n_components)
 
 
 if __name__ == "__main__":
