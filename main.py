@@ -10,21 +10,23 @@
 
 import numpy as np
 # from knn import compute_centroid, predict
-from sklearn.neighbors import KNeighborsClassifier
 import dim_red
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
 from graph_pca_info import plot_pca_info
 from normalize import norm, standardize
 from sklearn import metrics
 from pprint import pprint
 
-# import Xtrain and Xtest data #
+# import training and testing data #
 
 filePath = "X.dat"
 file = open(filePath,'r')
 allData = np.loadtxt(file, delimiter=',')
-Xtrain = allData[0:int(len(allData)/2),:]
-Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
-ytrain = allData[0:int(len(allData)/2),-1]
+Xtrain = allData[0:int(len(allData)/2), 0:-1]
+Xtrain = standardize(Xtrain)
+# the labels are in the last column
+ytrain = allData[0:int(len(allData)/2), -1]
 
 # n_components for dimensionality reduction, chosen from graph_pca_info plots
 n_components = 20
@@ -37,12 +39,12 @@ n_neighbors = 5
 # lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1)
 # componentsPca(n_components)
 # kpca(n_components)
-dim_red_method = dim_red.lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1, hessian=True)
-reducedXTrain = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+dim_red_method = dim_red.componentsPca(n_components)
+reducedXTrain = dim_red_method.fit_transform(Xtrain, ytrain)
 
-Xtest = allData[int(len(allData)/2) + 1:, :]
-Xtest[:,0:-1] = standardize(Xtest[:,0:-1])
-reducedXTest = dim_red_method.transform(Xtest[:,0:-1])
+Xtest = allData[int(len(allData)/2) + 1:, 0:-1]
+Xtest = standardize(Xtest)
+reducedXTest = dim_red_method.transform(Xtest)
 ytest = allData[int(len(allData)/2) + 1:, -1]
 
 n_train, d = reducedXTrain.shape
@@ -61,6 +63,12 @@ print "accuracy = "
 pprint(metrics.accuracy_score(ytest, predicted_labels))
 
 # plot_pca_info(Xtrain[:,0:-1], n_components)
+
+
+# k-fold cross validation
+k = 10
+#scores = cross_val_score(knn, reducedXTrain, cv=k)
+#print "scores: ", scores
 
 # Compute the ROC curves and ROC areas
 fpr_knn = dict()
