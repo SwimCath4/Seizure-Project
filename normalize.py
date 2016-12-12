@@ -15,13 +15,13 @@ def norm(X):
 	mean = np.mean(X, axis=0)
 	max = np.amax(X, axis=0)
 	min = np.amin(X, axis=0)
-	print "mean.shape = ", mean.shape
-	print "mean = ", mean
-	print "max.shape = ", max.shape
-	print "max = ", max
-	print "min.shape = ", min.shape
-	print "min = ", min
-	print "max - min", np.subtract(max, min)
+	#print "mean.shape = ", mean.shape
+	#print "mean = ", mean
+	#print "max.shape = ", max.shape
+	#print "max = ", max
+	#print "min.shape = ", min.shape
+	#print "min = ", min
+	#print "max - min", np.subtract(max, min)
 	return np.true_divide(np.subtract(X, min), max - min)
 
 def standardize(X):
@@ -30,8 +30,8 @@ def standardize(X):
 	'''
 	mean = np.mean(X, axis=0)
 	stddev = np.std(X, axis=0)
-	print "mean.shape = ", mean.shape
-	print "mean = ", mean
-	print "stddev.shape = ", stddev.shape
-	print "stddev = ", stddev
+	#print "mean.shape = ", mean.shape
+	#print "mean = ", mean
+	#print "stddev.shape = ", stddev.shape
+	#print "stddev = ", stddev
 	return np.true_divide(np.subtract(X, mean), stddev)
