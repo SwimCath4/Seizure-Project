@@ -213,6 +213,8 @@ with PdfPages('ROC_nocrossval.pdf') as pdf:
     plt.close()
 
 # Things we can try to do to get better results/plots:
+# figure out a way to use gridsearch to find the best parameters for knn,
+#   and possibly for the dimensionality reduction methods
 # change kpca kernel type
 # change kernel parameters of the kpca kernel
 # change number of neighbors for LLE
