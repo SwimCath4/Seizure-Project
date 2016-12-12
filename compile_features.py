@@ -22,7 +22,7 @@ num_features = 6;
 num_files = len([f for f in os.listdir(directory)
                 if os.path.isfile(os.path.join(directory, f))])
 if (isTrainingData):
-    X = np.zeros([num_channels * num_features + 1, num_files])
+    X = np.zeros([num_files, num_channels * num_features + 1])
 else:
     X = np.zeros([num_channels * num_features, num_files]) # transpose at end
 
@@ -33,11 +33,11 @@ i = 0;
 for filename in os.listdir(directory):
     print (i);
     # Extract the data from the file    
-    X[:,i] = np.loadtxt(directory + filename, delimiter= ',');
+    X[i,:] = np.loadtxt(directory + filename, delimiter= ',');
     i += 1;
 
-X = np.transpose(X);
 if (isTrainingData):
-    np.savetxt('X_train.dat', X, delimiter=',');
+    np.savetxt('X.dat', X, delimiter=',');
 else:
+    X = np.transpose(X);
     np.savetxt('X_test.dat', X, delimiter=',');    
