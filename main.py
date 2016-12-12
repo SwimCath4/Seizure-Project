@@ -12,6 +12,8 @@ import numpy as np
 from knn import compute_centroid, predict
 import dim_red
 from normalize import norm, standardize
+from sklearn import metrics
+from pprint import pprint
 
 # import Xtrain and Xtest data #
 
@@ -23,7 +25,7 @@ Xtrain[:,0:-1] = standardize(Xtrain[:,0:-1])
 ytrain = allData[0:int(len(allData)/2),-1]
 
 # dimensionality reduction; change the method for whichever method
-dim_red_method = dim_red.componentsPca(9)
+dim_red_method = dim_red.lle(9)
 dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
 
 Xtest = allData[int(len(allData)/2) + 1:, :]
@@ -69,3 +71,10 @@ for i in range(0, n_test):
     predicted_labels[i] = predict(centroid_0, centroid_1, Xtest[i,:-1])
 
 print "predicted_labels = ", predicted_labels
+
+print "LLE & KNN accuracy = "
+pprint(metrics.accuracy_score(ytest, predicted_labels))
+print "LLE & KNN precision = "
+pprint(metrics.precision_score(ytest, predicted_labels))
+print "LLE & KNN recall = "
+pprint(metrics.recall_score(ytest, predicted_labels))
