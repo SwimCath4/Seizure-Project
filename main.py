@@ -54,23 +54,23 @@ centroid_1_init = 0
 ## Compute centroids for training data ##
 
 for i in range(0, n_train):
-    if(ytrain[i] == 0.0):
-        if(centroid_0_init == 0):
-            centroid_0 = reducedXTrain[i,:]
-            centroid_0_init = 1
-            #print "centroid_0 first = ", centroid_0
-        else:
-            # centroid_0 = compute_centroid(centroid_0, Xtrain[i,:-1])
-            centroid_0 = compute_centroid(centroid_0, reducedXTrain[i,:])
+  if(ytrain[i] == 0.0):
+    if(centroid_0_init == 0):
+      centroid_0 = reducedXTrain[i,:]
+      centroid_0_init = 1
+      #print "centroid_0 first = ", centroid_0
+    else:
+      # centroid_0 = compute_centroid(centroid_0, Xtrain[i,:-1])
+      centroid_0 = compute_centroid(centroid_0, reducedXTrain[i,:])
 
-    elif(ytrain[i] == 1.0):
-        if(centroid_1_init == 0):
-            centroid_1 = reducedXTrain[i,:]
-            centroid_1_init = 1
-            #print "centroid_1 first = ", centroid_1
-        else:
-            # centroid_1 = compute_centroid(centroid_1, Xtrain[i,:-1])
-            centroid_1 = compute_centroid(centroid_1, reducedXTrain[i,:])
+  elif(ytrain[i] == 1.0):
+    if(centroid_1_init == 0):
+      centroid_1 = reducedXTrain[i,:]
+      centroid_1_init = 1
+      #print "centroid_1 first = ", centroid_1
+    else:
+      # centroid_1 = compute_centroid(centroid_1, Xtrain[i,:-1])
+      centroid_1 = compute_centroid(centroid_1, reducedXTrain[i,:])
 
 #print "centroid_0 = ", centroid_0
 #print "centroid_1 = ", centroid_1
