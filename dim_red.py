@@ -34,7 +34,7 @@ def kpca(numComponents, coef0=1):
 	return KernelPCA(n_components=numComponents, kernel='rbf', coef0=coef0)
 		
 
-def lle(numComponents, hessian=false):
+def lle(numComponents, hessian=False):
 	# if there's time we can try changing n_neighbors
 	if hessian:
 		return LocallyLinearEmbedding(n_components=numComponents, method='hessian')

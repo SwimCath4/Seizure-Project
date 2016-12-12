@@ -11,7 +11,6 @@
 import numpy as np
 from knn import compute_centroid, predict
 import dim_red
-import lle
 from normalize import norm, standardize
 
 # import Xtrain and Xtest data #
@@ -25,11 +24,11 @@ ytrain = allData[0:int(len(allData)/2),-1]
 
 # dimensionality reduction; change the method for whichever method
 dim_red_method = dim_red.componentsPca(9)
-Xtrain[:,0:-1] = dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
+dim_red_method.fit_transform(Xtrain[:,0:-1], ytrain)
 
 Xtest = allData[int(len(allData)/2) + 1:, :]
 Xtest[:,0:-1] = standardize(Xtest[:,0:-1])
-Xtest[:,0:-1] = dim_red_method.transform(Xtest[:,0:-1])
+dim_red_method.transform(Xtest[:,0:-1])
 ytest = allData[int(len(allData)/2) + 1:, -1]
 
 n_train, d = Xtrain.shape
