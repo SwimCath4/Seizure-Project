@@ -18,6 +18,7 @@ from sklearn import metrics
 from pprint import pprint
 from sklearn.metrics import roc_curve, auc
 from matplotlib.backends.backend_pdf import PdfPages
+import time
 import matplotlib.pyplot as plt
 
 # import training and testing data #
@@ -41,7 +42,8 @@ knn_neighbors = 5
 # lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1)
 # componentsPca(n_components)
 # kpca(n_components)
-dim_red_method = dim_red.componentsPca(n_components)
+start_time = time.clock()
+dim_red_method = dim_red.lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1, hessian=True)
 reducedXTrain = dim_red_method.fit_transform(Xtrain, ytrain)
 
 Xtest = allData[int(len(allData)/2) + 1:, 0:-1]
@@ -59,14 +61,19 @@ n_test = Xtest.shape[0]
 knn = KNeighborsClassifier(n_neighbors=knn_neighbors, p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
+
+end_time = time.clock()
+
+print "time from dim_red_method instantiation to prediction output: ", end_time - start_time
+exit()
 # print "predicted_labels = ", predicted_labels
 
-print "precision = "
-pprint(metrics.precision_score(ytest, predicted_labels))
-print "recall = "
-pprint(metrics.recall_score(ytest, predicted_labels))
-print "accuracy = "
-pprint(metrics.accuracy_score(ytest, predicted_labels))
+# print "precision = "
+# pprint(metrics.precision_score(ytest, predicted_labels))
+# print "recall = "
+# pprint(metrics.recall_score(ytest, predicted_labels))
+# print "accuracy = "
+# pprint(metrics.accuracy_score(ytest, predicted_labels))
 
 # plot_pca_info(Xtrain[:,0:-1], n_components)
 
@@ -79,16 +86,24 @@ np.random.shuffle(dataCopy)
 
 X = dataCopy[:, 0:-1]
 y = dataCopy[:, -1]
-scores = cross_val_score(knn, X, y=y, cv=k_folds)
-print "scores: ", scores
+
+# scores = cross_val_score(knn, X, y=y, scoring='precision', cv=k_folds)
+# print "CV fold precision scores: ", scores
+
+# scores = cross_val_score(knn, X, y=y, scoring='recall', cv=k_folds)
+# print "CV fold recall scores: ", scores
+
+# scores = cross_val_score(knn, X, y=y, scoring='accuracy', cv=k_folds)
+# print "CV fold accuracy scores: ", scores
+
 
 # Compute the ROC curves and ROC areas
 fpr_knn = dict()
 tpr_knn = dict()
 roc_auc_knn = dict()
 fpr_knn, tpr_knn, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn = ", fpr_knn
-print "tpr_knn = ", tpr_knn
+# print "fpr_knn = ", fpr_knn
+# print "tpr_knn = ", tpr_knn
 roc_auc_knn = auc(fpr_knn, tpr_knn)
 
 # knn with pca
@@ -100,18 +115,18 @@ n_test = Xtest.shape[0]
 knn = KNeighborsClassifier(p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
-print "precision = "
-pprint(metrics.precision_score(ytest, predicted_labels))
-print "recall = "
-pprint(metrics.recall_score(ytest, predicted_labels))
-print "accuracy = "
-pprint(metrics.accuracy_score(ytest, predicted_labels))
+# print "precision = "
+# pprint(metrics.precision_score(ytest, predicted_labels))
+# print "recall = "
+# pprint(metrics.recall_score(ytest, predicted_labels))
+# print "accuracy = "
+# pprint(metrics.accuracy_score(ytest, predicted_labels))
 fpr_knn_pca = dict()
 tpr_knn_pca = dict()
 roc_auc_knn_pca = dict()
 fpr_knn_pca, tpr_knn_pca, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn_pca = ", fpr_knn_pca
-print "tpr_knn_pca = ", tpr_knn_pca
+# print "fpr_knn_pca = ", fpr_knn_pca
+# print "tpr_knn_pca = ", tpr_knn_pca
 roc_auc_knn_pca = auc(fpr_knn_pca, tpr_knn_pca)
 
 # knn with kpca
@@ -123,18 +138,18 @@ n_test = Xtest.shape[0]
 knn = KNeighborsClassifier(p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
-print "precision = "
-pprint(metrics.precision_score(ytest, predicted_labels))
-print "recall = "
-pprint(metrics.recall_score(ytest, predicted_labels))
-print "accuracy = "
-pprint(metrics.accuracy_score(ytest, predicted_labels))
+# print "precision = "
+# pprint(metrics.precision_score(ytest, predicted_labels))
+# print "recall = "
+# pprint(metrics.recall_score(ytest, predicted_labels))
+# print "accuracy = "
+# pprint(metrics.accuracy_score(ytest, predicted_labels))
 fpr_knn_kpca = dict()
 tpr_knn_kpca = dict()
 roc_auc_knn_kpca = dict()
 fpr_knn_kpca, tpr_knn_kpca, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn_kpca = ", fpr_knn_kpca
-print "tpr_knn_kpca = ", tpr_knn_kpca
+# print "fpr_knn_kpca = ", fpr_knn_kpca
+# print "tpr_knn_kpca = ", tpr_knn_kpca
 roc_auc_knn_kpca = auc(fpr_knn_kpca, tpr_knn_kpca)
 
 # knn with lle
@@ -146,18 +161,18 @@ n_test = Xtest.shape[0]
 knn = KNeighborsClassifier(p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
-print "precision = "
-pprint(metrics.precision_score(ytest, predicted_labels))
-print "recall = "
-pprint(metrics.recall_score(ytest, predicted_labels))
-print "accuracy = "
-pprint(metrics.accuracy_score(ytest, predicted_labels))
+# print "precision = "
+# pprint(metrics.precision_score(ytest, predicted_labels))
+# print "recall = "
+# pprint(metrics.recall_score(ytest, predicted_labels))
+# print "accuracy = "
+# pprint(metrics.accuracy_score(ytest, predicted_labels))
 fpr_knn_lle = dict()
 tpr_knn_lle = dict()
 roc_auc_knn_lle = dict()
 fpr_knn_lle, tpr_knn_lle, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn_lle = ", fpr_knn_lle
-print "tpr_knn_lle = ", tpr_knn_lle
+# print "fpr_knn_lle = ", fpr_knn_lle
+# print "tpr_knn_lle = ", tpr_knn_lle
 roc_auc_knn_lle = auc(fpr_knn_lle, tpr_knn_lle)
 
 # knn with hlle
@@ -169,18 +184,18 @@ n_test = Xtest.shape[0]
 knn = KNeighborsClassifier(p=2)
 knn.fit(reducedXTrain, ytrain)
 predicted_labels = knn.predict(reducedXTest)
-print "precision = "
-pprint(metrics.precision_score(ytest, predicted_labels))
-print "recall = "
-pprint(metrics.recall_score(ytest, predicted_labels))
-print "accuracy = "
-pprint(metrics.accuracy_score(ytest, predicted_labels))
+# print "precision = "
+# pprint(metrics.precision_score(ytest, predicted_labels))
+# print "recall = "
+# pprint(metrics.recall_score(ytest, predicted_labels))
+# print "accuracy = "
+# pprint(metrics.accuracy_score(ytest, predicted_labels))
 fpr_knn_hlle = dict()
 tpr_knn_hlle = dict()
 roc_auc_knn_hlle = dict()
 fpr_knn_hlle, tpr_knn_hlle, _ = roc_curve(ytest, predicted_labels)
-print "fpr_knn_hlle = ", fpr_knn_hlle
-print "tpr_knn_hlle = ", tpr_knn_hlle
+# print "fpr_knn_hlle = ", fpr_knn_hlle
+# print "tpr_knn_hlle = ", tpr_knn_hlle
 roc_auc_knn_hlle = auc(fpr_knn_hlle, tpr_knn_hlle)
 
 # Compute micro-average ROC curve and ROC area
