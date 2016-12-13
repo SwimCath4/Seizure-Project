@@ -32,7 +32,7 @@ Xtrain = standardize(Xtrain)
 ytrain = allData[0:int(len(allData)/2), -1]
 
 # n_components for dimensionality reduction, chosen from graph_pca_info plots
-n_components = 20
+n_components = 40
 # n_neighbors for knn; sklearn's default value is 5
 knn_neighbors = 5
 
@@ -43,7 +43,7 @@ knn_neighbors = 5
 # componentsPca(n_components)
 # kpca(n_components)
 start_time = time.clock()
-dim_red_method = dim_red.lle(n_components, neighbors=(n_components * (n_components + 3) / 2) + 1, hessian=True)
+dim_red_method = dim_red.componentsPca(n_components)
 reducedXTrain = dim_red_method.fit_transform(Xtrain, ytrain)
 
 Xtest = allData[int(len(allData)/2) + 1:, 0:-1]
@@ -65,7 +65,7 @@ predicted_labels = knn.predict(reducedXTest)
 end_time = time.clock()
 
 print "time from dim_red_method instantiation to prediction output: ", end_time - start_time
-exit()
+
 # print "predicted_labels = ", predicted_labels
 
 # print "precision = "
@@ -75,8 +75,8 @@ exit()
 # print "accuracy = "
 # pprint(metrics.accuracy_score(ytest, predicted_labels))
 
-# plot_pca_info(Xtrain[:,0:-1], n_components)
-
+plot_pca_info(Xtrain[:,0:-1], n_components)
+exit()
 
 # k-fold cross validation over the entire dataset
 k_folds = 10

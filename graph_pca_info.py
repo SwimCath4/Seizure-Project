@@ -36,14 +36,14 @@ def plot_pca_info(data, n_components):
 		end_times[i] = time.clock()
 		
 		print "princip. comp.s, explained var.: ", princ_c, sum(pca.explained_variance_ratio_)
-		plt.plot(princ_c, sum(pca.explained_variance_ratio_), "ko", linestyle='None')
+		# plt.plot(princ_c, sum(pca.explained_variance_ratio_), "ko", linestyle='None')
 	plt.xlabel("Principal components")
 	plt.ylabel("Explained variance")
 
 	plt.subplot(1, 2, 2, aspect='equal')
 	plt.title("CPU time for PCA given desired principal components")
 	# list comprehension is cool, I wanted to try it
-	plt.plot([(x + 1) for x in range(n_components)], np.multiply([end_times[y] - start_times[y] for y in range(n_components)], 1000))
+	# plt.plot([(x + 1) for x in range(n_components)], np.multiply([end_times[y] - start_times[y] for y in range(n_components)], 1000))
 	plt.xlabel("Principal components")
 	plt.ylabel("CPU time (milliseconds)")
 
